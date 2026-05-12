@@ -446,7 +446,7 @@
     </div>
   </div>
 
-  <!-- RESULTS — content inserted via safe DOM methods -->
+  <!-- RESULTS -->
   <div class="card" id="screen-results">
     <div class="results-header">
       <div class="results-icon">
@@ -454,16 +454,14 @@
           <polyline points="20 6 9 17 4 12"/>
         </svg>
       </div>
-      <div class="results-title" id="resultsTitle">Your Personalised Report</div>
-      <div class="results-sub">Based on your answers, here's what we recommend</div>
+      <div class="results-title" id="resultsTitle">Response Recorded</div>
+      <div class="results-sub" id="resultsSub">Thank you for completing the survey.</div>
     </div>
     <div class="summary-box" id="resultsSummary"></div>
-    <div class="recs-title">Top 3 Recommended Automations</div>
-    <div id="resultsRecs"></div>
     <div class="cta-box">
-      <h3>Ready to automate your real estate business?</h3>
-      <p>Book a free 20-minute strategy call — we'll walk you through implementation and pricing.</p>
-      <button class="cta-btn" id="btnCta">Book a Free Call on WhatsApp</button>
+      <h3>What happens next?</h3>
+      <p>Our team will review your answers and reach out within 24 hours with a tailored automation roadmap and pricing — specific to your business.</p>
+      <button class="cta-btn" id="btnCta">Connect on WhatsApp</button>
     </div>
   </div>
 </div>
@@ -769,7 +767,7 @@
       });
       if (!res.ok) throw new Error('Server returned ' + res.status);
       const data = await res.json();
-      if (data.success) { showResults(data.analysis); }
+      if (data.success) { showResults(); }
       else throw new Error('Unexpected response');
     } catch (e) {
       const loadEl = document.getElementById('screen-loading');
@@ -789,50 +787,12 @@
     }
   }
 
-  // ---- Render results — all textContent, no innerHTML for dynamic data ----
-  function showResults(analysis) {
+  function showResults() {
     const firstName = userData.name.split(' ')[0];
-    document.getElementById('resultsTitle').textContent = 'Here\'s your personalised report, ' + firstName;
-
+    document.getElementById('resultsTitle').textContent = 'Thank You, ' + firstName + '!';
+    document.getElementById('resultsSub').textContent = 'Your response has been recorded successfully.';
     const summaryEl = document.getElementById('resultsSummary');
-    summaryEl.textContent = '';
-    summaryEl.textContent = analysis.summary || 'Analysis complete.';
-
-    const recsEl = document.getElementById('resultsRecs');
-    recsEl.textContent = '';
-
-    const recs = Array.isArray(analysis.recommendations) ? analysis.recommendations : [];
-    recs.forEach((r, i) => {
-      const card = document.createElement('div');
-      card.className = 'rec-card';
-
-      const num = document.createElement('div');
-      num.className = 'rec-num';
-      num.textContent = String(i + 1);
-      card.appendChild(num);
-
-      const body = document.createElement('div');
-
-      const name = document.createElement('div');
-      name.className = 'rec-name';
-      name.textContent = r.name || '';
-      body.appendChild(name);
-
-      const why = document.createElement('div');
-      why.className = 'rec-why';
-      why.textContent = r.why || '';
-      body.appendChild(why);
-
-      const badge = document.createElement('span');
-      const p = r.priority || 'Medium';
-      badge.className = 'priority-badge p-' + p;
-      badge.textContent = p + ' Priority';
-      body.appendChild(badge);
-
-      card.appendChild(body);
-      recsEl.appendChild(card);
-    });
-
+    summaryEl.textContent = 'We’ve received your answers and are preparing a personalised automation roadmap for your business. Our team will reach out to you within 24 hours to walk you through the best solutions and pricing.';
     show('screen-results');
   }
 
