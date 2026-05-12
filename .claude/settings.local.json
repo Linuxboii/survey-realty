@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Skill(wat-init)"
+      "Skill(wat-init)",
+      "Bash(python *)"
     ]
   }
 }

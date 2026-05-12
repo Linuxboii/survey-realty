@@ -3,204 +3,506 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Real Estate Automation Discovery | Avlok Ai</title>
+  <title>Real Estate Automation Discovery | Avlok AI</title>
   <link rel="icon" type="image/jpeg" href="avlokai_logo.jpeg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --navy: #0d2137;
-      --navy-mid: #153350;
-      --gold: #c8993a;
-      --gold-light: #e8b84b;
-      --white: #ffffff;
-      --off-white: #f5f7fa;
-      --gray-100: #eef1f5;
-      --gray-300: #c4cdd8;
-      --gray-500: #7a8fa6;
-      --gray-700: #3d5168;
-      --text: #1a2d42;
-      --radius: 12px;
-      --shadow: 0 4px 24px rgba(13,33,55,0.10);
+      --navy:        #0d2137;
+      --navy-mid:    #153350;
+      --navy-light:  #1e4168;
+      --gold:        #c8993a;
+      --gold-light:  #e0b050;
+      --gold-glow:   rgba(200,153,58,0.35);
+      --white:       #ffffff;
+      --text:        #1a2d42;
+      --text-muted:  #5a7a9a;
+      --gray-200:    #dde3ec;
+      --gray-400:    #9aabbd;
+      --radius-sm:   10px;
+      --radius:      16px;
+      --radius-lg:   24px;
+
+      /* Glass tokens */
+      --glass-bg:         rgba(255,255,255,0.72);
+      --glass-bg-hover:   rgba(255,255,255,0.82);
+      --glass-border:     rgba(255,255,255,0.55);
+      --glass-border-sel: rgba(13,33,55,0.70);
+      --glass-shadow:     0 8px 32px rgba(13,33,55,0.22), 0 1px 1px rgba(255,255,255,0.40) inset;
+      --glass-blur:       blur(22px) saturate(160%);
     }
 
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .blob { animation: none !important; }
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       ANIMATED BACKGROUND
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: var(--off-white);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #08121e;
       color: var(--text);
-      min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
+    .bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+      background: radial-gradient(ellipse 120% 80% at 30% 0%,  #0d2b50 0%, transparent 55%),
+                  radial-gradient(ellipse 80%  60% at 80% 100%, #0a1e38 0%, transparent 50%),
+                  linear-gradient(160deg, #08121e 0%, #0d1f36 50%, #080f1c 100%);
+    }
+
+    /* Floating glowing orbs */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(72px);
+      will-change: transform;
+    }
+    .blob-1 {
+      width: 520px; height: 520px;
+      background: rgba(13,33,55,0.90);
+      top: -120px; left: -80px;
+      animation: floatA 28s ease-in-out infinite;
+    }
+    .blob-2 {
+      width: 400px; height: 400px;
+      background: rgba(200,153,58,0.18);
+      bottom: -60px; right: -60px;
+      animation: floatB 22s ease-in-out infinite;
+    }
+    .blob-3 {
+      width: 300px; height: 300px;
+      background: rgba(30,65,104,0.55);
+      top: 40%; left: 60%;
+      animation: floatC 35s ease-in-out infinite;
+    }
+    .blob-4 {
+      width: 200px; height: 200px;
+      background: rgba(200,153,58,0.10);
+      top: 25%; left: 10%;
+      animation: floatD 18s ease-in-out infinite;
+    }
+
+    @keyframes floatA {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33%      { transform: translate(60px,40px) scale(1.06); }
+      66%      { transform: translate(-30px,70px) scale(0.95); }
+    }
+    @keyframes floatB {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50%      { transform: translate(-80px,-60px) scale(1.10); }
+    }
+    @keyframes floatC {
+      0%,100% { transform: translate(0,0) scale(1); }
+      40%      { transform: translate(50px,-80px) scale(1.08); }
+      80%      { transform: translate(-40px,30px) scale(0.94); }
+    }
+    @keyframes floatD {
+      0%,100% { transform: translate(0,0); }
+      50%      { transform: translate(30px,50px); }
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       TOPBAR
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     .topbar {
-      background: var(--navy);
-      padding: 12px 32px;
+      background: rgba(8,18,30,0.75);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      backdrop-filter: blur(20px) saturate(160%);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    .topbar .logo img {
-      height: 44px;
-      width: auto;
-      display: block;
+    .topbar-logo img { height: 36px; width: auto; display: block; }
+    .topbar-badge {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.38);
+      letter-spacing: 0.06em;
     }
 
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MAIN LAYOUT
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     .main {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 40px 20px 80px;
+      padding: 52px 20px 100px;
+      position: relative;
+      z-index: 1;
     }
 
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       PROGRESS BAR
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     .progress-wrap {
       width: 100%;
-      max-width: 680px;
-      margin-bottom: 32px;
+      max-width: 720px;
+      margin-bottom: 24px;
       display: none;
+      animation: fadeIn 0.4s ease both;
     }
     .progress-meta {
       display: flex;
       justify-content: space-between;
-      font-size: 0.78rem;
-      color: var(--gray-500);
-      margin-bottom: 8px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 10px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
-    .progress-bar { height: 4px; background: var(--gray-100); border-radius: 99px; overflow: hidden; }
+    .progress-bar {
+      height: 6px;
+      background: rgba(255,255,255,0.10);
+      border-radius: 99px;
+      overflow: hidden;
+    }
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 60%, rgba(255,220,120,0.90) 100%);
       border-radius: 99px;
       width: 0%;
-      transition: width 0.4s ease;
+      transition: width 0.55s cubic-bezier(0.4,0,0.2,1);
+      position: relative;
+      overflow: hidden;
+    }
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.45) 50%, transparent 100%);
+      animation: shimmerSweep 2.2s ease-in-out infinite;
+    }
+    @keyframes shimmerSweep {
+      0%   { transform: translateX(-100%); }
+      100% { transform: translateX(300%); }
     }
 
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       GLASS CARD
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     .card {
-      background: var(--white);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      background: var(--glass-bg);
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--glass-shadow);
       width: 100%;
-      max-width: 680px;
-      padding: 40px 44px;
+      max-width: 720px;
+      padding: 52px 56px;
       display: none;
     }
-    .card.active { display: block; }
-
-    /* Welcome */
-    .welcome-badge {
-      display: inline-block;
-      background: #fff7e6;
-      color: var(--gold);
-      border: 1px solid #f0d080;
-      border-radius: 99px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 4px 14px;
-      margin-bottom: 20px;
+    .card.active {
+      display: block;
+      animation: cardIn 0.38s cubic-bezier(0.22,1,0.36,1) both;
     }
+    .card.exit {
+      animation: cardOut 0.22s cubic-bezier(0.4,0,1,1) both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0)   scale(1);    }
+    }
+    @keyframes cardOut {
+      from { opacity: 1; transform: translateY(0)    scale(1);    }
+      to   { opacity: 0; transform: translateY(-14px) scale(0.97); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       WELCOME SCREEN
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .welcome-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(200,153,58,0.12);
+      border: 1px solid rgba(200,153,58,0.35);
+      border-radius: 99px;
+      font-size: 0.70rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      padding: 5px 14px;
+      margin-bottom: 24px;
+      animation: cardIn 0.5s 0.1s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .welcome-eyebrow-dot {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--gold);
+      animation: dotPulse 2s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0%,100% { box-shadow: 0 0 4px var(--gold); }
+      50%      { box-shadow: 0 0 10px var(--gold-light), 0 0 20px var(--gold-glow); }
+    }
+
     .welcome-title {
-      font-size: 1.9rem;
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 1.95rem;
       font-weight: 700;
       color: var(--navy);
       line-height: 1.25;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+      animation: cardIn 0.5s 0.18s cubic-bezier(0.22,1,0.36,1) both;
     }
     .welcome-sub {
-      color: var(--gray-500);
-      font-size: 0.95rem;
-      line-height: 1.6;
-      margin-bottom: 28px;
-    }
-    .meta-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px; }
-    .pill {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--gray-100);
-      border-radius: 99px;
-      padding: 6px 14px;
-      font-size: 0.82rem;
-      color: var(--gray-700);
-      font-weight: 500;
+      color: var(--text-muted);
+      font-size: 0.97rem;
+      line-height: 1.72;
+      margin-bottom: 32px;
+      max-width: 520px;
+      animation: cardIn 0.5s 0.24s cubic-bezier(0.22,1,0.36,1) both;
     }
 
-    /* Fields */
+    /* Trust pills */
+    .trust-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 36px;
+      list-style: none;
+    }
+    .trust-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(13,33,55,0.06);
+      border: 1px solid rgba(13,33,55,0.10);
+      border-radius: 99px;
+      padding: 7px 14px;
+      font-size: 0.79rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      transition: background 0.2s, border-color 0.2s;
+      animation: cardIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .trust-pill:nth-child(1) { animation-delay: 0.28s; }
+    .trust-pill:nth-child(2) { animation-delay: 0.33s; }
+    .trust-pill:nth-child(3) { animation-delay: 0.38s; }
+    .trust-pill:nth-child(4) { animation-delay: 0.43s; }
+    .trust-pill:hover {
+      background: rgba(13,33,55,0.10);
+      border-color: rgba(13,33,55,0.18);
+    }
+    .trust-pill svg { flex-shrink: 0; color: var(--navy-mid); }
+
+    .form-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(13,33,55,0.12), transparent);
+      margin: 0 0 30px;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       FORM FIELDS
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     .field-group { margin-bottom: 20px; }
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
     label.field-label {
       display: block;
-      font-size: 0.82rem;
+      font-size: 0.77rem;
       font-weight: 600;
-      color: var(--gray-700);
-      margin-bottom: 6px;
+      color: var(--navy-mid);
+      margin-bottom: 7px;
+      letter-spacing: 0.03em;
     }
+    .field-required { color: var(--gold); margin-left: 1px; }
+
     input[type="text"],
     input[type="email"],
     input[type="tel"] {
       width: 100%;
-      padding: 11px 14px;
-      border: 1.5px solid var(--gray-300);
-      border-radius: 8px;
-      font-size: 0.95rem;
+      padding: 12px 16px;
+      border: 1.5px solid rgba(13,33,55,0.16);
+      border-radius: var(--radius-sm);
+      font-size: 0.93rem;
+      font-family: 'Inter', sans-serif;
       color: var(--text);
-      background: var(--white);
+      background: rgba(255,255,255,0.65);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.22s, box-shadow 0.22s, background 0.22s;
     }
-    input:focus { border-color: var(--navy-mid); }
-    .error-msg { color: #c0392b; font-size: 0.8rem; margin-top: 6px; min-height: 1rem; }
+    input:focus {
+      background: rgba(255,255,255,0.90);
+      border-color: var(--navy-mid);
+      box-shadow: 0 0 0 3px rgba(21,51,80,0.12), 0 0 12px rgba(21,51,80,0.06);
+    }
+    input::placeholder { color: var(--gray-400); }
 
-    /* Question */
+    .error-msg {
+      color: #c0392b;
+      font-size: 0.77rem;
+      font-weight: 500;
+      margin-top: 5px;
+      min-height: 1rem;
+    }
+    .field-shake { animation: shake 0.4s cubic-bezier(0.36,0.07,0.19,0.97); }
+    @keyframes shake {
+      10%,90%  { transform: translateX(-2px); }
+      20%,80%  { transform: translateX(4px); }
+      30%,50%,70% { transform: translateX(-4px); }
+      40%,60%  { transform: translateX(4px); }
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       QUESTION HEADER
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     .q-step {
-      font-size: 0.78rem;
-      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.70rem;
+      font-weight: 700;
       color: var(--gold);
-      letter-spacing: 0.06em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 10px;
+      margin-bottom: 16px;
+    }
+    .q-step-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(200,153,58,0.40), transparent);
+      min-width: 48px;
     }
     .q-text {
-      font-size: 1.3rem;
-      font-weight: 700;
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 1.22rem;
+      font-weight: 600;
       color: var(--navy);
-      line-height: 1.35;
-      margin-bottom: 6px;
+      line-height: 1.42;
+      margin-bottom: 7px;
+      letter-spacing: -0.01em;
     }
-    .q-note { font-size: 0.82rem; color: var(--gray-500); margin-bottom: 24px; min-height: 1.2em; }
+    .q-note {
+      font-size: 0.79rem;
+      color: var(--gray-400);
+      margin-bottom: 26px;
+      min-height: 1.2em;
+      font-style: italic;
+    }
 
-    /* Options */
-    .options { display: flex; flex-direction: column; gap: 10px; }
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       OPTION CARDS (glass)
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .options { display: flex; flex-direction: column; gap: 9px; }
+
     .option {
       display: flex;
       align-items: center;
       gap: 14px;
-      padding: 13px 16px;
-      border: 1.5px solid var(--gray-300);
-      border-radius: 10px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.38);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(255,255,255,0.55);
+      border-radius: var(--radius-sm);
       cursor: pointer;
-      transition: border-color 0.18s, background 0.18s;
+      transition: background 0.20s, border-color 0.20s, box-shadow 0.20s, transform 0.16s;
       user-select: none;
+
+      /* Staggered entrance */
+      opacity: 0;
+      transform: translateX(-10px);
     }
-    .option:hover { border-color: var(--navy-mid); background: #f0f4fa; }
-    .option.selected { border-color: var(--navy); background: #eef3fb; }
+    /* Triggered when parent card is active */
+    .card.active .option {
+      animation: optionIn 0.30s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    .card.active .option:nth-child(1)  { animation-delay: 0.08s; }
+    .card.active .option:nth-child(2)  { animation-delay: 0.13s; }
+    .card.active .option:nth-child(3)  { animation-delay: 0.18s; }
+    .card.active .option:nth-child(4)  { animation-delay: 0.23s; }
+    .card.active .option:nth-child(5)  { animation-delay: 0.28s; }
+    .card.active .option:nth-child(6)  { animation-delay: 0.33s; }
+    .card.active .option:nth-child(7)  { animation-delay: 0.38s; }
+    .card.active .option:nth-child(8)  { animation-delay: 0.43s; }
+    @keyframes optionIn {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .option:hover {
+      background: rgba(255,255,255,0.65);
+      border-color: rgba(13,33,55,0.25);
+      box-shadow: 0 4px 16px rgba(13,33,55,0.10);
+      transform: translateX(4px);
+    }
+    .option:active { transform: translateX(4px) scale(0.988); }
+    .option.selected {
+      background: rgba(13,33,55,0.07);
+      border-color: var(--navy);
+      box-shadow: 0 0 0 1px var(--navy), 0 4px 20px rgba(13,33,55,0.14);
+      animation: optionIn 0.30s cubic-bezier(0.22,1,0.36,1) forwards, selectFlash 0.25s ease !important;
+    }
+    @keyframes selectFlash {
+      0%  { box-shadow: 0 0 0 0 rgba(13,33,55,0.40); }
+      50% { box-shadow: 0 0 0 5px rgba(13,33,55,0.10); }
+      100%{ box-shadow: 0 0 0 1px var(--navy), 0 4px 20px rgba(13,33,55,0.14); }
+    }
+    .option:focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 2px;
+    }
 
     .custom-check {
-      width: 20px; height: 20px;
-      border: 2px solid var(--gray-300);
-      border-radius: 5px;
+      width: 22px; height: 22px;
+      border: 2px solid rgba(13,33,55,0.28);
+      border-radius: 6px;
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: border-color 0.18s, background 0.18s;
+      transition: border-color 0.18s, background 0.18s, transform 0.18s;
     }
-    .option.selected .custom-check { border-color: var(--navy); background: var(--navy); }
-    .check-icon { opacity: 0; transition: opacity 0.15s; }
-    .option.selected .check-icon { opacity: 1; }
+    .option.selected .custom-check {
+      border-color: var(--navy);
+      background: var(--navy);
+      transform: scale(1.08);
+    }
+    .check-icon { opacity: 0; transition: opacity 0.15s; transform: scale(0.7); transition: opacity 0.15s, transform 0.20s; }
+    .option.selected .check-icon { opacity: 1; transform: scale(1); }
 
     .custom-radio {
-      width: 20px; height: 20px;
-      border: 2px solid var(--gray-300);
+      width: 22px; height: 22px;
+      border: 2px solid rgba(13,33,55,0.28);
       border-radius: 50%;
       flex-shrink: 0;
       display: flex;
@@ -214,169 +516,384 @@
       border-radius: 50%;
       background: var(--navy);
       opacity: 0;
-      transition: opacity 0.15s;
+      transform: scale(0.4);
+      transition: opacity 0.18s, transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
     }
-    .option.selected .radio-dot { opacity: 1; }
+    .option.selected .radio-dot { opacity: 1; transform: scale(1); }
 
-    .option-label { font-size: 0.93rem; font-weight: 500; color: var(--text); line-height: 1.3; }
+    .option-label {
+      font-size: 0.91rem;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.35;
+      flex: 1;
+    }
 
-    .other-input-wrap { display: none; padding: 8px 0 0 34px; }
-    .other-input-wrap.visible { display: block; }
+    .other-input-wrap { display: none; padding: 10px 0 0 36px; }
+    .other-input-wrap.visible { display: block; animation: slideDown 0.22s ease; }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
     .other-input-wrap input {
-      border: 1.5px solid var(--gray-300);
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 0.88rem;
+      border: 1.5px solid rgba(13,33,55,0.18);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 0.87rem;
+      font-family: 'Inter', sans-serif;
+      background: rgba(255,255,255,0.70);
       width: 100%;
       outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .other-input-wrap input:focus { border-color: var(--navy-mid); }
+    .other-input-wrap input:focus {
+      border-color: var(--navy-mid);
+      box-shadow: 0 0 0 3px rgba(21,51,80,0.10);
+    }
 
-    /* Buttons */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       BUTTONS
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     .btn-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 32px;
+      margin-top: 36px;
       gap: 12px;
     }
     .btn {
-      padding: 12px 28px;
-      border-radius: 8px;
-      font-size: 0.92rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 13px 28px;
+      border-radius: var(--radius-sm);
+      font-size: 0.89rem;
       font-weight: 600;
+      font-family: 'Inter', sans-serif;
       cursor: pointer;
       border: none;
-      transition: opacity 0.2s, transform 0.15s;
+      transition: background 0.20s, opacity 0.20s, transform 0.15s, box-shadow 0.20s;
+      letter-spacing: 0.01em;
+      position: relative;
+      overflow: hidden;
     }
-    .btn:active { transform: scale(0.97); }
-    .btn-primary { background: var(--navy); color: var(--white); min-width: 130px; }
-    .btn-primary:hover { opacity: 0.88; }
-    .btn-ghost { background: transparent; color: var(--gray-500); border: 1.5px solid var(--gray-300); }
-    .btn-ghost:hover { border-color: var(--gray-500); color: var(--text); }
-
-    /* Loading */
-    .loading-wrap { text-align: center; padding: 48px 0; }
-    .spinner {
-      width: 48px; height: 48px;
-      border: 4px solid var(--gray-100);
-      border-top-color: var(--navy);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 20px;
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%);
+      transform: translateX(-100%);
+      transition: transform 0s;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .loading-text { color: var(--gray-500); font-size: 0.9rem; }
+    .btn:hover::after {
+      transform: translateX(100%);
+      transition: transform 0.55s ease;
+    }
+    .btn:active { transform: scale(0.965); }
+    .btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 
-    /* Results */
-    .results-header { text-align: center; margin-bottom: 32px; }
-    .results-icon {
+    .btn-primary {
+      background: var(--navy);
+      color: var(--white);
+      min-width: 148px;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(13,33,55,0.30), 0 1px 0 rgba(255,255,255,0.08) inset;
+    }
+    .btn-primary:hover {
+      background: var(--navy-mid);
+      box-shadow: 0 6px 20px rgba(13,33,55,0.38);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active { transform: translateY(0) scale(0.965); }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.30);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      color: var(--text-muted);
+      border: 1.5px solid rgba(13,33,55,0.15);
+    }
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.55);
+      border-color: rgba(13,33,55,0.25);
+      color: var(--text);
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       LOADING SCREEN
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .loading-wrap { text-align: center; padding: 60px 0; }
+    .loading-orb {
       width: 64px; height: 64px;
-      background: linear-gradient(135deg, var(--navy), var(--navy-mid));
       border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      box-shadow: 0 0 0 0 rgba(13,33,55,0.30);
+      margin: 0 auto 28px;
+      animation: orbPulse 1.8s ease-in-out infinite;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 16px;
     }
-    .results-title { font-size: 1.5rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
-    .results-sub { color: var(--gray-500); font-size: 0.92rem; }
+    @keyframes orbPulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(13,33,55,0.30); transform: scale(1); }
+      50%      { box-shadow: 0 0 0 18px rgba(13,33,55,0); transform: scale(1.06); }
+    }
+    .loading-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .loading-dot {
+      width: 7px; height: 7px;
+      background: rgba(255,255,255,0.80);
+      border-radius: 50%;
+      animation: dotBounce 1.2s ease-in-out infinite;
+    }
+    .loading-dot:nth-child(1) { animation-delay: 0s; }
+    .loading-dot:nth-child(2) { animation-delay: 0.20s; }
+    .loading-dot:nth-child(3) { animation-delay: 0.40s; }
+    @keyframes dotBounce {
+      0%,80%,100% { transform: scale(0.6); opacity: 0.4; }
+      40%          { transform: scale(1.1); opacity: 1; }
+    }
+    .loading-headline {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .loading-text { color: var(--text-muted); font-size: 0.87rem; line-height: 1.65; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       RESULTS SCREEN
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .results-header { text-align: center; margin-bottom: 36px; }
+    .results-icon-wrap {
+      position: relative;
+      width: 80px; height: 80px;
+      margin: 0 auto 22px;
+    }
+    .results-icon-ring {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 28px rgba(13,33,55,0.30);
+      position: relative;
+      z-index: 1;
+      animation: iconEntrance 0.6s 0.2s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes iconEntrance {
+      from { opacity: 0; transform: scale(0.5); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .pulse-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(13,33,55,0.30);
+      animation: pulseRing 2.0s ease-out infinite;
+    }
+    .pulse-ring:nth-child(2) { animation-delay: 0.7s; }
+    @keyframes pulseRing {
+      0%   { transform: scale(1);   opacity: 0.70; }
+      100% { transform: scale(2.0); opacity: 0; }
+    }
+    .results-title {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .results-sub { color: var(--text-muted); font-size: 0.92rem; }
 
     .summary-box {
-      background: #f0f4fa;
+      background: rgba(13,33,55,0.05);
+      border: 1px solid rgba(13,33,55,0.10);
       border-left: 4px solid var(--navy);
-      border-radius: 8px;
-      padding: 16px 20px;
-      margin-bottom: 28px;
-      font-size: 0.93rem;
-      line-height: 1.65;
-      color: var(--gray-700);
+      border-radius: var(--radius-sm);
+      padding: 20px 24px;
+      margin-bottom: 32px;
+      font-size: 0.92rem;
+      line-height: 1.72;
+      color: var(--text-muted);
     }
 
-    .recs-title {
-      font-size: 0.78rem;
+    .next-steps-label {
+      font-size: 0.70rem;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--gray-500);
-      margin-bottom: 14px;
+      color: var(--gray-400);
+      margin-bottom: 16px;
     }
-    .rec-card {
-      border: 1.5px solid var(--gray-100);
-      border-radius: 10px;
-      padding: 16px 20px;
-      margin-bottom: 12px;
+    .next-step-item {
       display: flex;
       gap: 16px;
       align-items: flex-start;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(13,33,55,0.07);
+      animation: cardIn 0.40s cubic-bezier(0.22,1,0.36,1) both;
     }
-    .rec-num {
-      width: 32px; height: 32px;
+    .next-step-item:nth-child(1) { animation-delay: 0.20s; }
+    .next-step-item:nth-child(2) { animation-delay: 0.32s; }
+    .next-step-item:nth-child(3) { animation-delay: 0.44s; }
+    .next-step-item:last-child { border-bottom: none; }
+    .next-step-num {
+      width: 30px; height: 30px;
       background: var(--navy);
       color: var(--white);
-      border-radius: 8px;
-      font-size: 0.85rem;
+      border-radius: 50%;
+      font-size: 0.76rem;
       font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      margin-top: 1px;
     }
-    .rec-name { font-weight: 700; font-size: 0.97rem; color: var(--navy); margin-bottom: 4px; }
-    .rec-why { font-size: 0.85rem; color: var(--gray-500); line-height: 1.5; }
-    .priority-badge {
-      display: inline-block;
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 2px 10px;
-      border-radius: 99px;
-      margin-top: 6px;
-      letter-spacing: 0.04em;
+    .next-step-strong {
+      display: block;
+      font-size: 0.91rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 3px;
     }
-    .p-High { background: #fff1f0; color: #c0392b; }
-    .p-Medium { background: #fffbf0; color: #c7821a; }
-    .p-Low { background: #f0fff4; color: #27ae60; }
+    .next-step-detail { font-size: 0.82rem; color: var(--text-muted); line-height: 1.56; }
 
+    /* CTA Box — glass on dark gradient */
     .cta-box {
-      background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+      background: linear-gradient(135deg, rgba(13,33,55,0.90) 0%, rgba(21,51,80,0.88) 100%);
+      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.12);
       color: var(--white);
       border-radius: var(--radius);
-      padding: 28px 32px;
+      padding: 32px 36px;
       text-align: center;
       margin-top: 28px;
+      position: relative;
+      overflow: hidden;
     }
-    .cta-box h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
-    .cta-box p { font-size: 0.85rem; opacity: 0.75; margin-bottom: 20px; }
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(200,153,58,0.18) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cta-box::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: -40px;
+      width: 160px; height: 160px;
+      background: radial-gradient(circle, rgba(30,65,104,0.40) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cta-box-title {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 1.12rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+    .cta-box-sub {
+      font-size: 0.84rem;
+      opacity: 0.70;
+      margin-bottom: 24px;
+      line-height: 1.65;
+      position: relative;
+      z-index: 1;
+    }
     .cta-btn {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
       background: var(--gold);
       color: var(--navy);
+      font-family: 'Inter', sans-serif;
       font-weight: 700;
-      font-size: 0.92rem;
-      padding: 12px 28px;
-      border-radius: 8px;
+      font-size: 0.91rem;
+      padding: 14px 32px;
+      border-radius: var(--radius-sm);
       cursor: pointer;
       border: none;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      transition: background 0.22s, transform 0.15s, box-shadow 0.22s;
+      box-shadow: 0 4px 14px rgba(200,153,58,0.40);
     }
-    .cta-btn:hover { opacity: 0.88; }
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+      transform: translateX(-100%);
+    }
+    .cta-btn:hover {
+      background: var(--gold-light);
+      box-shadow: 0 6px 22px rgba(200,153,58,0.55);
+      transform: translateY(-2px);
+    }
+    .cta-btn:hover::before {
+      transform: translateX(100%);
+      transition: transform 0.60s ease;
+    }
+    .cta-btn:active { transform: translateY(0); }
+    .cta-btn:focus-visible { outline: 3px solid rgba(255,255,255,0.60); outline-offset: 3px; }
 
-    @media (max-width: 600px) {
-      .card { padding: 28px 20px; }
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       RESPONSIVE
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    @media (max-width: 640px) {
+      .topbar { padding: 0 18px; }
+      .main { padding: 28px 14px 88px; }
+      .card { padding: 30px 22px; border-radius: var(--radius); }
       .field-row { grid-template-columns: 1fr; }
-      .welcome-title { font-size: 1.5rem; }
+      .welcome-title { font-size: 1.50rem; }
+      .q-text { font-size: 1.08rem; }
+      .cta-box { padding: 24px 20px; }
+      .blob-1 { width: 280px; height: 280px; }
+      .blob-2 { width: 220px; height: 220px; }
+      .blob-3 { width: 180px; height: 180px; }
+    }
+    @media (max-width: 400px) {
+      .welcome-title { font-size: 1.28rem; }
+      .btn { padding: 11px 18px; font-size: 0.85rem; }
     }
   </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="logo">
-    <img src="avlokai_logo.jpeg" alt="Avlok Ai" />
-  </div>
+<!-- Animated background -->
+<div class="bg-canvas" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
 </div>
 
-<div class="main">
-  <div class="progress-wrap" id="progressWrap">
+<header class="topbar" role="banner">
+  <div class="topbar-logo">
+    <img src="avlokai_logo.jpeg" alt="Avlok AI" />
+  </div>
+  <span class="topbar-badge" aria-hidden="true">Real Estate Automation</span>
+</header>
+
+<main class="main" role="main">
+
+  <!-- Progress -->
+  <div class="progress-wrap" id="progressWrap"
+       role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+       aria-label="Survey progress">
     <div class="progress-meta">
       <span id="progressLabel">Question 1 of 14</span>
       <span id="progressPct">0%</span>
@@ -387,30 +904,40 @@
   </div>
 
   <!-- WELCOME -->
-  <div class="card active" id="screen-welcome">
-    <div class="welcome-badge">Free · 5 minutes · Personalised</div>
-    <h1 class="welcome-title">Find out exactly which automations will move the needle for your real estate business</h1>
-    <p class="welcome-sub">Answer 14 quick questions. We'll analyse your answers and recommend the top 3 automations tailored to your business — with pricing and ROI context.</p>
-    <div class="meta-pills">
-      <div class="pill">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-        ~5 minutes
-      </div>
-      <div class="pill">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Data stays private
-      </div>
-      <div class="pill">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M21 12c0 4.97-4.03 9-9 9S3 16.97 3 12 7.03 3 12 3s9 4.03 9 9z"/></svg>
-        Personalised recommendations
-      </div>
+  <section class="card active" id="screen-welcome" aria-label="Survey introduction">
+    <div class="welcome-eyebrow">
+      <span class="welcome-eyebrow-dot" aria-hidden="true"></span>
+      Free · 5 minutes · Personalised
     </div>
+    <h1 class="welcome-title">Find out exactly which automations will move the needle for your real estate business</h1>
+    <p class="welcome-sub">Answer 14 quick questions. We'll analyse your business profile and identify the top automations — tailored to your scale, pain points, and budget.</p>
+
+    <ul class="trust-pills" aria-label="Survey details">
+      <li class="trust-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        ~5 minutes
+      </li>
+      <li class="trust-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Data stays private
+      </li>
+      <li class="trust-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M9 12l2 2 4-4M21 12c0 4.97-4.03 9-9 9S3 16.97 3 12 7.03 3 12 3s9 4.03 9 9z"/></svg>
+        Personalised report via email
+      </li>
+      <li class="trust-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        No sales pressure
+      </li>
+    </ul>
+
+    <div class="form-divider"></div>
 
     <div class="field-row field-group">
       <div>
-        <label class="field-label" for="fName">Your name *</label>
+        <label class="field-label" for="fName">Your name <span class="field-required" aria-label="required">*</span></label>
         <input type="text" id="fName" placeholder="Rahul Sharma" autocomplete="name" />
-        <div class="error-msg" id="errName"></div>
+        <div class="error-msg" id="errName" role="alert" aria-live="polite"></div>
       </div>
       <div>
         <label class="field-label" for="fCompany">Company / Agency name</label>
@@ -419,52 +946,99 @@
     </div>
     <div class="field-row field-group">
       <div>
-        <label class="field-label" for="fEmail">Email address *</label>
+        <label class="field-label" for="fEmail">Email address <span class="field-required" aria-label="required">*</span></label>
         <input type="email" id="fEmail" placeholder="rahul@company.com" autocomplete="email" />
-        <div class="error-msg" id="errEmail"></div>
+        <div class="error-msg" id="errEmail" role="alert" aria-live="polite"></div>
       </div>
       <div>
-        <label class="field-label" for="fPhone">WhatsApp / Phone *</label>
+        <label class="field-label" for="fPhone">WhatsApp / Phone <span class="field-required" aria-label="required">*</span></label>
         <input type="tel" id="fPhone" placeholder="+91 98765 43210" autocomplete="tel" />
-        <div class="error-msg" id="errPhone"></div>
+        <div class="error-msg" id="errPhone" role="alert" aria-live="polite"></div>
       </div>
     </div>
 
     <div class="btn-row" style="justify-content:flex-end">
-      <button class="btn btn-primary" id="btnStart">Start Survey →</button>
+      <button class="btn btn-primary" id="btnStart">
+        Start Survey
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
     </div>
-  </div>
+  </section>
 
-  <!-- QUESTION SCREENS — built by JS into here -->
+  <!-- QUESTION SCREENS — populated by JS -->
   <div id="questionScreens"></div>
 
   <!-- LOADING -->
-  <div class="card" id="screen-loading">
+  <section class="card" id="screen-loading" aria-label="Processing your answers" aria-busy="true">
     <div class="loading-wrap">
-      <div class="spinner"></div>
-      <p class="loading-text">Analysing your answers and building your personalised report…</p>
+      <div class="loading-orb" aria-hidden="true">
+        <div class="loading-dots">
+          <div class="loading-dot"></div>
+          <div class="loading-dot"></div>
+          <div class="loading-dot"></div>
+        </div>
+      </div>
+      <p class="loading-headline">Analysing your business profile</p>
+      <p class="loading-text">Preparing your personalised automation roadmap…</p>
     </div>
-  </div>
+  </section>
 
   <!-- RESULTS -->
-  <div class="card" id="screen-results">
+  <section class="card" id="screen-results" aria-label="Survey complete">
     <div class="results-header">
-      <div class="results-icon">
-        <svg width="28" height="28" fill="none" stroke="#c8993a" stroke-width="2.5" viewBox="0 0 24 24">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
+      <div class="results-icon-wrap" aria-hidden="true">
+        <div class="pulse-ring"></div>
+        <div class="pulse-ring"></div>
+        <div class="results-icon-ring">
+          <svg width="30" height="30" fill="none" stroke="var(--gold)" stroke-width="2.5" viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
       </div>
-      <div class="results-title" id="resultsTitle">Response Recorded</div>
-      <div class="results-sub" id="resultsSub">Thank you for completing the survey.</div>
+      <h2 class="results-title" id="resultsTitle">Response Recorded</h2>
+      <p class="results-sub" id="resultsSub">Thank you for completing the survey.</p>
     </div>
+
     <div class="summary-box" id="resultsSummary"></div>
+
+    <p class="next-steps-label">What happens next</p>
+    <ol aria-label="Next steps">
+      <li class="next-step-item">
+        <div class="next-step-num" aria-hidden="true">1</div>
+        <div>
+          <span class="next-step-strong">Report delivered to your inbox</span>
+          <span class="next-step-detail">Your personalised automation report is on its way — check your email within a few minutes.</span>
+        </div>
+      </li>
+      <li class="next-step-item">
+        <div class="next-step-num" aria-hidden="true">2</div>
+        <div>
+          <span class="next-step-strong">Our team reviews your profile</span>
+          <span class="next-step-detail">We'll study your answers and prepare a tailored roadmap and pricing specific to your business.</span>
+        </div>
+      </li>
+      <li class="next-step-item">
+        <div class="next-step-num" aria-hidden="true">3</div>
+        <div>
+          <span class="next-step-strong">Free strategy call within 24 hours</span>
+          <span class="next-step-detail">We'll reach out via your preferred channel to walk you through the recommendations.</span>
+        </div>
+      </li>
+    </ol>
+
     <div class="cta-box">
-      <h3>What happens next?</h3>
-      <p>Our team will review your answers and reach out within 24 hours with a tailored automation roadmap and pricing — specific to your business.</p>
-      <button class="cta-btn" id="btnCta">Connect on WhatsApp</button>
+      <p class="cta-box-title">Want to connect right now?</p>
+      <p class="cta-box-sub">Skip the wait — message us on WhatsApp and we'll respond within minutes.</p>
+      <button class="cta-btn" id="btnCta" aria-label="Connect on WhatsApp">
+        <svg width="18" height="18" viewBox="0 0 448 512" fill="currentColor" aria-hidden="true">
+          <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+        </svg>
+        Connect on WhatsApp
+      </button>
     </div>
-  </div>
-</div>
+  </section>
+
+</main>
 
 <script>
 (function () {
@@ -503,16 +1077,29 @@
       options:['WhatsApp call or message','Email','Phone call','Zoom / video call'] },
   ];
 
-  // State
   let currentQ = 0;
-  const answers = {}; // { idx: { selected: string[], otherText: string } }
+  const answers = {};
   const userData = {};
 
-  // ---- Helpers ----
+  /* ── Animated card transition ── */
   function show(id) {
-    document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const current = document.querySelector('.card.active');
+    const next    = document.getElementById(id);
+    if (!next) return;
+
+    if (current && current !== next) {
+      current.classList.add('exit');
+      current.addEventListener('animationend', function handler() {
+        current.removeEventListener('animationend', handler);
+        current.classList.remove('active', 'exit');
+        next.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, { once: true });
+    } else {
+      if (current) current.classList.remove('active');
+      next.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   function updateProgress(idx) {
@@ -520,6 +1107,7 @@
     document.getElementById('progressFill').style.width = pct + '%';
     document.getElementById('progressLabel').textContent = 'Question ' + (idx + 1) + ' of ' + QUESTIONS.length;
     document.getElementById('progressPct').textContent = pct + '%';
+    document.getElementById('progressWrap').setAttribute('aria-valuenow', pct);
   }
 
   function getAns(idx) {
@@ -527,52 +1115,45 @@
     return answers[idx];
   }
 
-  // ---- Build question screens using DOM (no innerHTML for content) ----
   function buildScreens() {
     const container = document.getElementById('questionScreens');
 
-    QUESTIONS.forEach((q, idx) => {
+    QUESTIONS.forEach(function(q, idx) {
       const isMulti = q.type === 'multi';
-      const card = document.createElement('div');
+      const card = document.createElement('section');
       card.className = 'card';
       card.id = 'screen-q' + idx;
+      card.setAttribute('aria-label', 'Question ' + (idx + 1) + ' of ' + QUESTIONS.length);
 
-      // Step label
       const stepEl = document.createElement('div');
       stepEl.className = 'q-step';
-      stepEl.textContent = 'Question ' + (idx + 1) + ' of ' + QUESTIONS.length;
+      stepEl.setAttribute('aria-hidden', 'true');
+      stepEl.appendChild(document.createTextNode('Question ' + (idx + 1) + ' of ' + QUESTIONS.length));
+      const stepLine = document.createElement('span');
+      stepLine.className = 'q-step-line';
+      stepEl.appendChild(stepLine);
       card.appendChild(stepEl);
 
-      // Question text
-      const textEl = document.createElement('div');
+      const textEl = document.createElement('h2');
       textEl.className = 'q-text';
       textEl.textContent = q.text;
       card.appendChild(textEl);
 
-      // Note
       const noteEl = document.createElement('div');
       noteEl.className = 'q-note';
-      noteEl.textContent = q.note || '';
+      noteEl.textContent = q.note || (isMulti ? 'Select all that apply' : 'Choose one option');
       card.appendChild(noteEl);
 
-      // Options list
       const optsList = document.createElement('div');
       optsList.className = 'options';
+      optsList.setAttribute('role', isMulti ? 'group' : 'radiogroup');
+      optsList.setAttribute('aria-label', q.text);
 
-      q.options.forEach((opt, oi) => {
-        const label = buildOption(opt, isMulti, () => {
-          handleOptionClick(idx, oi, isMulti, label);
-        });
-        optsList.appendChild(label);
+      q.options.forEach(function(opt, oi) {
+        const el = buildOption(opt, isMulti, function() { handleOptionClick(idx, oi, isMulti, el); });
+        optsList.appendChild(el);
       });
 
-      // Other option
-      const otherLabel = buildOption('Other', isMulti, () => {
-        handleOtherClick(idx, isMulti, otherLabel, otherWrap);
-      });
-      optsList.appendChild(otherLabel);
-
-      // Other text input
       const otherWrap = document.createElement('div');
       otherWrap.className = 'other-input-wrap';
       otherWrap.id = 'other-wrap-' + idx;
@@ -580,21 +1161,23 @@
       otherInput.type = 'text';
       otherInput.placeholder = 'Please specify…';
       otherInput.id = 'other-text-' + idx;
-      otherInput.addEventListener('input', () => {
-        getAns(idx).otherText = otherInput.value;
-      });
+      otherInput.setAttribute('aria-label', 'Other option — please specify');
+      otherInput.addEventListener('input', function() { getAns(idx).otherText = otherInput.value; });
       otherWrap.appendChild(otherInput);
-      optsList.appendChild(otherWrap);
 
+      const otherEl = buildOption('Other', isMulti, function() { handleOtherClick(idx, isMulti, otherEl, otherWrap); });
+      optsList.appendChild(otherEl);
+      optsList.appendChild(otherWrap);
       card.appendChild(optsList);
 
-      // Button row
       const btnRow = document.createElement('div');
       btnRow.className = 'btn-row';
 
       const backBtn = document.createElement('button');
       backBtn.className = 'btn btn-ghost';
-      backBtn.textContent = '← Back';
+      backBtn.setAttribute('aria-label', 'Go back');
+      backBtn.appendChild(makeSvg('M19 12H5M12 19l-7-7 7-7'));
+      backBtn.appendChild(document.createTextNode(' Back'));
       if (idx === 0) backBtn.style.visibility = 'hidden';
       backBtn.addEventListener('click', prevQuestion);
       btnRow.appendChild(backBtn);
@@ -602,8 +1185,12 @@
       const nextBtn = document.createElement('button');
       nextBtn.className = 'btn btn-primary';
       nextBtn.id = 'btn-next-' + idx;
-      nextBtn.textContent = idx === QUESTIONS.length - 1 ? 'Submit →' : 'Next →';
-      nextBtn.addEventListener('click', () => nextQuestion(idx));
+      const isLast = idx === QUESTIONS.length - 1;
+      nextBtn.appendChild(document.createTextNode(isLast ? 'Submit ' : 'Next '));
+      nextBtn.appendChild(makeSvg(isLast
+        ? 'M9 12l2 2 4-4M21 12c0 4.97-4.03 9-9 9S3 16.97 3 12 7.03 3 12 3s9 4.03 9 9z'
+        : 'M5 12h14M12 5l7 7-7 7'));
+      nextBtn.addEventListener('click', function() { nextQuestion(idx); });
       btnRow.appendChild(nextBtn);
 
       card.appendChild(btnRow);
@@ -611,14 +1198,29 @@
     });
   }
 
+  function makeSvg(d) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('width', '16'); svg.setAttribute('height', '16');
+    svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor'); svg.setAttribute('stroke-width', '2.5');
+    svg.setAttribute('aria-hidden', 'true');
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', d);
+    svg.appendChild(path);
+    return svg;
+  }
+
   function buildOption(labelText, isMulti, clickHandler) {
-    const label = document.createElement('div');
-    label.className = 'option';
-    label.setAttribute('role', 'option');
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.setAttribute('role', isMulti ? 'checkbox' : 'radio');
+    div.setAttribute('aria-checked', 'false');
+    div.setAttribute('tabindex', '0');
 
     if (isMulti) {
       const box = document.createElement('span');
       box.className = 'custom-check';
+      box.setAttribute('aria-hidden', 'true');
       const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       svg.setAttribute('width', '12'); svg.setAttribute('height', '12');
       svg.setAttribute('viewBox', '0 0 12 12'); svg.setAttribute('fill', 'none');
@@ -626,84 +1228,112 @@
       svg.classList.add('check-icon');
       const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
       poly.setAttribute('points', '2,6 5,9 10,3');
-      svg.appendChild(poly); box.appendChild(svg); label.appendChild(box);
+      svg.appendChild(poly); box.appendChild(svg); div.appendChild(box);
     } else {
       const circle = document.createElement('span');
       circle.className = 'custom-radio';
+      circle.setAttribute('aria-hidden', 'true');
       const dot = document.createElement('span');
       dot.className = 'radio-dot';
-      circle.appendChild(dot); label.appendChild(circle);
+      circle.appendChild(dot);
+      div.appendChild(circle);
     }
 
     const span = document.createElement('span');
     span.className = 'option-label';
     span.textContent = labelText;
-    label.appendChild(span);
+    div.appendChild(span);
 
-    label.addEventListener('click', clickHandler);
-    return label;
+    div.addEventListener('click', clickHandler);
+    div.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); clickHandler(); }
+    });
+    return div;
   }
 
-  function handleOptionClick(qIdx, oIdx, isMulti, labelEl) {
+  function handleOptionClick(qIdx, oIdx, isMulti, divEl) {
     const val = QUESTIONS[qIdx].options[oIdx];
     const ans = getAns(qIdx);
-
     if (!isMulti) {
-      // Deselect all in this screen
-      document.querySelectorAll('#screen-q' + qIdx + ' .option').forEach(el => el.classList.remove('selected'));
-      // Also close other wrap if open
-      const wrap = document.getElementById('other-wrap-' + qIdx);
-      wrap.classList.remove('visible');
+      document.querySelectorAll('#screen-q' + qIdx + ' .option').forEach(function(el) {
+        el.classList.remove('selected');
+        el.setAttribute('aria-checked', 'false');
+      });
+      document.getElementById('other-wrap-' + qIdx).classList.remove('visible');
       ans.otherText = '';
       ans.selected = [val];
-      labelEl.classList.add('selected');
+      divEl.classList.add('selected');
+      divEl.setAttribute('aria-checked', 'true');
     } else {
-      if (labelEl.classList.contains('selected')) {
-        labelEl.classList.remove('selected');
-        ans.selected = ans.selected.filter(v => v !== val);
+      if (divEl.classList.contains('selected')) {
+        divEl.classList.remove('selected');
+        divEl.setAttribute('aria-checked', 'false');
+        ans.selected = ans.selected.filter(function(v) { return v !== val; });
       } else {
-        labelEl.classList.add('selected');
+        divEl.classList.add('selected');
+        divEl.setAttribute('aria-checked', 'true');
         ans.selected.push(val);
       }
     }
   }
 
-  function handleOtherClick(qIdx, isMulti, labelEl, wrapEl) {
+  function handleOtherClick(qIdx, isMulti, divEl, wrapEl) {
     const ans = getAns(qIdx);
     if (!isMulti) {
-      document.querySelectorAll('#screen-q' + qIdx + ' .option').forEach(el => el.classList.remove('selected'));
+      document.querySelectorAll('#screen-q' + qIdx + ' .option').forEach(function(el) {
+        el.classList.remove('selected');
+        el.setAttribute('aria-checked', 'false');
+      });
       ans.selected = [];
       ans.otherText = '';
-      labelEl.classList.add('selected');
+      divEl.classList.add('selected');
+      divEl.setAttribute('aria-checked', 'true');
       wrapEl.classList.add('visible');
       document.getElementById('other-text-' + qIdx).focus();
     } else {
-      if (labelEl.classList.contains('selected')) {
-        labelEl.classList.remove('selected');
+      if (divEl.classList.contains('selected')) {
+        divEl.classList.remove('selected');
+        divEl.setAttribute('aria-checked', 'false');
         wrapEl.classList.remove('visible');
         ans.otherText = '';
       } else {
-        labelEl.classList.add('selected');
+        divEl.classList.add('selected');
+        divEl.setAttribute('aria-checked', 'true');
         wrapEl.classList.add('visible');
         document.getElementById('other-text-' + qIdx).focus();
       }
     }
   }
 
-  // ---- Navigation ----
   document.getElementById('btnStart').addEventListener('click', startSurvey);
 
   function startSurvey() {
     const name  = document.getElementById('fName').value.trim();
     const email = document.getElementById('fEmail').value.trim();
     const phone = document.getElementById('fPhone').value.trim();
-    let ok = true;
 
-    document.getElementById('errName').textContent  = name  ? '' : 'Required';
-    document.getElementById('errEmail').textContent = /\S+@\S+\.\S+/.test(email) ? '' : 'Valid email required';
-    document.getElementById('errPhone').textContent = phone ? '' : 'Required';
-    if (!name || !/\S+@\S+\.\S+/.test(email) || !phone) ok = false;
-    if (!ok) return;
+    const nameErr  = name  ? '' : 'Please enter your name';
+    const emailErr = /\S+@\S+\.\S+/.test(email) ? '' : 'Please enter a valid email address';
+    const phoneErr = phone ? '' : 'Please enter your phone number';
+
+    document.getElementById('errName').textContent  = nameErr;
+    document.getElementById('errEmail').textContent = emailErr;
+    document.getElementById('errPhone').textContent = phoneErr;
+
+    if (nameErr || emailErr || phoneErr) {
+      /* Shake invalid fields */
+      ['fName','fEmail','fPhone'].forEach(function(id, i) {
+        const errs = [nameErr, emailErr, phoneErr];
+        if (errs[i]) {
+          const el = document.getElementById(id);
+          el.classList.remove('field-shake');
+          void el.offsetWidth;
+          el.classList.add('field-shake');
+          el.addEventListener('animationend', function() { el.classList.remove('field-shake'); }, { once: true });
+        }
+      });
+      return;
+    }
 
     userData.name    = name;
     userData.email   = email;
@@ -718,12 +1348,21 @@
 
   function nextQuestion(idx) {
     const ans = getAns(idx);
-    const otherSelected = document.querySelector('#screen-q' + idx + ' .option:last-of-type')?.classList.contains('selected');
-    if (ans.selected.length === 0 && !otherSelected) {
+    const otherEl  = document.querySelector('#screen-q' + idx + ' .option:last-of-type');
+    const hasOther = otherEl && otherEl.classList.contains('selected');
+    if (ans.selected.length === 0 && !hasOther) {
       const btn = document.getElementById('btn-next-' + idx);
-      const orig = btn.textContent;
-      btn.textContent = 'Pick an option first';
-      setTimeout(() => { btn.textContent = orig; }, 1500);
+      btn.disabled = true;
+      btn.style.opacity = '0.55';
+      btn.style.cursor  = 'not-allowed';
+      const origText = btn.firstChild.textContent;
+      btn.firstChild.textContent = 'Please pick an option ';
+      setTimeout(function() {
+        btn.firstChild.textContent = origText;
+        btn.disabled = false;
+        btn.style.opacity = '';
+        btn.style.cursor  = '';
+      }, 1600);
       return;
     }
     if (idx === QUESTIONS.length - 1) { submitSurvey(); return; }
@@ -743,7 +1382,6 @@
     show('screen-q' + currentQ);
   }
 
-  // ---- Submit ----
   async function submitSurvey() {
     show('screen-loading');
     document.getElementById('progressWrap').style.display = 'none';
@@ -753,10 +1391,10 @@
       email:   userData.email,
       phone:   userData.phone,
       company: userData.company,
-      answers: QUESTIONS.map((q, idx) => {
+      answers: QUESTIONS.map(function(q, idx) {
         const ans = getAns(idx);
         return { question_id: q.id, selected: ans.selected, other_text: ans.otherText || null };
-      }).filter(a => a.selected.length > 0 || a.other_text)
+      }).filter(function(a) { return a.selected.length > 0 || a.other_text; })
     };
 
     try {
@@ -770,38 +1408,44 @@
       if (data.success) { showResults(); }
       else throw new Error('Unexpected response');
     } catch (e) {
-      const loadEl = document.getElementById('screen-loading');
-      const wrap = loadEl.querySelector('.loading-wrap');
-      wrap.querySelector('.spinner').style.display = 'none';
-      const errP = document.createElement('p');
-      errP.style.color = '#c0392b';
-      errP.style.fontWeight = '600';
-      errP.textContent = 'Something went wrong. Please refresh and try again.';
-      wrap.appendChild(errP);
-      const detP = document.createElement('p');
-      detP.style.color = 'var(--gray-500)';
-      detP.style.fontSize = '0.85rem';
-      detP.style.marginTop = '8px';
-      detP.textContent = e.message;
-      wrap.appendChild(detP);
+      const wrap = document.querySelector('#screen-loading .loading-wrap');
+      while (wrap.firstChild) wrap.removeChild(wrap.firstChild);
+
+      const errTitle = document.createElement('p');
+      errTitle.className = 'loading-headline';
+      errTitle.style.color = '#c0392b';
+      errTitle.textContent = 'Something went wrong';
+      wrap.appendChild(errTitle);
+
+      const errMsg = document.createElement('p');
+      errMsg.className = 'loading-text';
+      errMsg.style.marginTop = '8px';
+      errMsg.textContent = 'Please refresh the page and try again. (' + e.message + ')';
+      wrap.appendChild(errMsg);
+
+      const retryBtn = document.createElement('button');
+      retryBtn.className = 'btn btn-primary';
+      retryBtn.style.marginTop = '20px';
+      retryBtn.textContent = 'Refresh page';
+      retryBtn.addEventListener('click', function() { location.reload(); });
+      wrap.appendChild(retryBtn);
     }
   }
 
   function showResults() {
     const firstName = userData.name.split(' ')[0];
     document.getElementById('resultsTitle').textContent = 'Thank You, ' + firstName + '!';
-    document.getElementById('resultsSub').textContent = 'Your response has been recorded successfully.';
-    const summaryEl = document.getElementById('resultsSummary');
-    summaryEl.textContent = 'We’ve received your answers and are preparing a personalised automation roadmap for your business. Our team will reach out to you within 24 hours to walk you through the best solutions and pricing.';
+    document.getElementById('resultsSub').textContent   = 'Your response has been recorded successfully.';
+    document.getElementById('resultsSummary').textContent =
+      'We’ve received your survey answers and are preparing a personalised automation roadmap for your business. Your detailed report will arrive in your email shortly, and our team will reach out within 24 hours.';
     show('screen-results');
   }
 
-  // ---- CTA ----
-  document.getElementById('btnCta').addEventListener('click', () => {
+  document.getElementById('btnCta').addEventListener('click', function() {
     const msg = encodeURIComponent(
-      'Hi, I just completed the real estate automation survey and would like to book a free call. My name is ' + (userData.name || '') + '.'
+      'Hi, I just completed the real estate automation survey and would like to book a free strategy call. My name is ' + (userData.name || '') + '.'
     );
-    window.open('https://wa.me/91XXXXXXXXXX?text=' + msg, '_blank');
+    window.open('https://wa.me/91XXXXXXXXXX?text=' + msg, '_blank', 'noopener,noreferrer');
   });
 
   buildScreens();
